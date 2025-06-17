@@ -28,7 +28,7 @@ Before running this application, make sure you have:
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/yourusername/traffic-signs-recognition.git
+   git clone https://github.com/yesminehe/traffic-signs-recognition.git
    cd traffic-signs-recognition
    ```
 
@@ -192,4 +192,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 Your Name - [@yourtwitter](https://twitter.com/yourtwitter) - email@example.com
 
-Project Link: [https://github.com/yourusername/traffic-signs-recognition](https://github.com/yourusername/traffic-signs-recognition)
+Project Link: [https://github.com/yesminehe/traffic-signs-recognition](https://github.com/yesminehe/traffic-signs-recognition)
