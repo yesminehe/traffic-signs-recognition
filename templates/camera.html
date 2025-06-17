@@ -1,0 +1,151 @@
+{% extends "base.html" %} {% block title %}Caméra - Reconnaissance de Panneaux{%
+endblock %} {% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-10 col-lg-8">
+    <div class="card">
+      <div class="card-header">
+        <h1>Caméra en Temps Réel</h1>
+      </div>
+      <div class="card-body">
+        <div class="camera-container">
+          <img
+            id="videoFeed"
+            src="{{ url_for('video_feed') }}"
+            alt="Flux vidéo"
+            class="img-fluid rounded"
+          />
+        </div>
+
+        <div class="result-section mt-4" id="resultSection">
+          <div class="alert alert-info">
+            <h3 class="alert-heading mb-3">
+              <i class="fas fa-traffic-light me-2"></i>Résultat de l'analyse
+            </h3>
+            <hr />
+            <div class="row align-items-center">
+              <div class="col-md-6">
+                <p class="mb-2">
+                  <strong
+                    ><i class="fas fa-sign me-2"></i>Panneau détecté :</strong
+                  >
+                  <span id="prediction" class="ms-2"></span>
+                </p>
+                <p class="mb-0">
+                  <strong
+                    ><i class="fas fa-chart-line me-2"></i>Confiance :</strong
+                  >
+                  <span id="confidence" class="ms-2"></span>
+                </p>
+              </div>
+              <div class="col-md-6">
+                <div class="progress">
+                  <div
+                    id="confidenceBar"
+                    class="progress-bar"
+                    role="progressbar"
+                    style="width: 0%"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="alert alert-light">
+            <h4 class="mb-3">
+              <i class="fas fa-info-circle me-2"></i>Description
+            </h4>
+            <p id="description" class="mb-0"></p>
+          </div>
+        </div>
+
+        <div class="text-center mt-4">
+          <button
+            id="startCamera"
+            class="btn btn-primary me-2"
+            onclick="startCamera()"
+          >
+            <i class="fas fa-play me-2"></i>Démarrer la caméra
+          </button>
+          <button
+            id="stopCamera"
+            class="btn btn-danger me-2"
+            onclick="stopCamera()"
+            disabled
+          >
+            <i class="fas fa-stop me-2"></i>Arrêter la caméra
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block extra_js %}
+<script>
+  const startCameraBtn = document.getElementById("startCamera");
+  const stopCameraBtn = document.getElementById("stopCamera");
+  const videoFeed = document.getElementById("videoFeed");
+
+  async function startCamera() {
+    try {
+      const response = await fetch("/start_camera");
+      const data = await response.json();
+
+      if (data.status === "success") {
+        startCameraBtn.disabled = true;
+        stopCameraBtn.disabled = false;
+        videoFeed.src = "{{ url_for('video_feed') }}";
+        startPredictionPolling();
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Une erreur est survenue lors du démarrage de la caméra.");
+    }
+  }
+
+  async function stopCamera() {
+    try {
+      await fetch("/stop_camera");
+      startCameraBtn.disabled = false;
+      stopCameraBtn.disabled = true;
+      videoFeed.src = "";
+      stopPredictionPolling();
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Une erreur est survenue lors de l'arrêt de la caméra.");
+    }
+  }
+
+  // Polling pour les prédictions
+  let predictionInterval;
+
+  function startPredictionPolling() {
+    predictionInterval = setInterval(updatePrediction, 1000);
+  }
+
+  function stopPredictionPolling() {
+    clearInterval(predictionInterval);
+    document.getElementById("prediction").textContent = "";
+    document.getElementById("confidence").textContent = "";
+    document.getElementById("confidenceBar").style.width = "0%";
+    document.getElementById("description").textContent = "";
+  }
+
+  async function updatePrediction() {
+    try {
+      const response = await fetch("/get_prediction");
+      const data = await response.json();
+
+      document.getElementById("prediction").textContent = data.prediction;
+      document.getElementById("confidence").textContent = `${data.confidence}%`;
+      document.getElementById(
+        "confidenceBar"
+      ).style.width = `${data.confidence}%`;
+      document.getElementById("description").textContent = data.description;
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+</script>
+{% endblock %}

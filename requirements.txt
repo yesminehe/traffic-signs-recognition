@@ -1,0 +1,7 @@
+flask==2.0.1
+flask-login==0.5.0
+werkzeug==2.0.1
+ultralytics
+pillow
+opencv-python
+numpy 
