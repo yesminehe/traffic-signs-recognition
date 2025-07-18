@@ -1,5 +1,7 @@
 # Traffic Signs Recognition System
 
+![YOLOv8](https://img.shields.io/badge/YOLOv8-Used-blue?logo=python)
+
 A Flask web application that uses YOLOv8 to recognize and classify traffic signs in real-time using your computer's camera. The application includes user authentication, a collection system to track discovered signs, and a web interface for easy interaction.
 
 ## Features
@@ -133,63 +135,4 @@ The application uses a YOLOv8 model trained on traffic sign datasets. The model 
 - `GET /camera` - Camera recognition page
 - `POST /start_camera` - Start camera stream
 - `POST /stop_camera` - Stop camera stream
-- `GET /video_feed` - Camera video stream
-- `GET /collection` - User's sign collection
-- `GET /get_collection` - Get collection data (JSON)
-- `POST /predict` - Upload image for prediction
-- `GET /get_prediction` - Get latest prediction results
-
-## Database Schema
-
-### Users Table
-
-- `id`: Primary key
-- `username`: Unique username
-- `password_hash`: Hashed password
-
-### Discovered Signs Table
-
-- `sign_name`: Traffic sign name (primary key)
-- `found`: Boolean indicating if sign was discovered
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## Troubleshooting
-
-### Camera Issues
-
-- Make sure your webcam is connected and not being used by another application
-- Try different camera indices (0, 1, 2) in the `start_camera()` function
-- Check if your browser allows camera access
-
-### Model Issues
-
-- Ensure the `best.pt` model file is in the root directory
-- Verify the model is compatible with the current YOLOv8 version
-
-### Database Issues
-
-- The application automatically creates SQLite databases on first run
-- If you encounter database errors, delete the `.db` files and restart
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- [Ultralytics YOLOv8](https://github.com/ultralytics/ultralytics) for the object detection framework
-- [Flask](https://flask.palletsprojects.com/) for the web framework
-- [OpenCV](https://opencv.org/) for computer vision capabilities
-
-## Contact
-
-Your Name - [@yourtwitter](https://twitter.com/yourtwitter) - email@example.com
-
-Project Link: [https://github.com/yesminehe/traffic-signs-recognition](https://github.com/yesminehe/traffic-signs-recognition)
+- `GET /video_feed`
